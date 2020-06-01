@@ -30,6 +30,13 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="BICAPweb\admin.py" />
+    <Compile Include="BICAPweb\apps.py" />
+    <Compile Include="BICAPweb\migrations\__init__.py" />
+    <Compile Include="BICAPweb\models.py" />
+    <Compile Include="BICAPweb\tests.py" />
+    <Compile Include="BICAPweb\views.py" />
+    <Compile Include="BICAPweb\__init__.py" />
     <Compile Include="manage.py" />
     <Compile Include="DjangoBICAP\__init__.py" />
     <Compile Include="DjangoBICAP\settings.py" />
@@ -37,9 +44,14 @@
     <Compile Include="DjangoBICAP\wsgi.py" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="BICAPweb\templates\BICAPweb\index.html" />
     <Content Include="requirements.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="BICAPweb\" />
+    <Folder Include="BICAPweb\migrations\" />
+    <Folder Include="BICAPweb\templates\" />
+    <Folder Include="BICAPweb\templates\BICAPweb\" />
     <Folder Include="DjangoBICAP\" />
   </ItemGroup>
   <ItemGroup>
