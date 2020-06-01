@@ -4,6 +4,7 @@
     <Name>DjangoBICAP</Name>
     <RootNamespace>DjangoBICAP</RootNamespace>
     <InterpreterId>MSBuild|envBICAP|$(MSBuildProjectFullPath)</InterpreterId>
+    <WebBrowserPort>8000</WebBrowserPort>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -31,6 +32,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="BICAPweb\admin.py" />
+    <Compile Include="BICAPweb\api\serializers.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BICAPweb\api\urls.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BICAPweb\api\views.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="BICAPweb\apps.py" />
     <Compile Include="BICAPweb\migrations\0001_initial.py" />
     <Compile Include="BICAPweb\migrations\__init__.py" />
@@ -57,6 +67,7 @@
   <ItemGroup>
     <Folder Include="BICAPweb\" />
     <Folder Include="BICAPweb\migrations\" />
+    <Folder Include="BICAPweb\api\" />
     <Folder Include="BICAPweb\templates\" />
     <Folder Include="BICAPweb\templates\BICAPweb\" />
     <Folder Include="DjangoBICAP\" />
