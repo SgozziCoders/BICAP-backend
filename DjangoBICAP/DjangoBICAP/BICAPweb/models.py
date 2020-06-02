@@ -29,7 +29,7 @@ class Distribuzione(models.Model):
     terminata = models.BooleanField()
 
     def __str__(self):
-        return "Utente: " + self.utente + " Indagine: " + self.indagine
+        return "Utente: " + self.utente.__str__() + " Indagine: " + self.indagine.__str__()
 
     class Meta:
         verbose_name = "Distribuzione"
