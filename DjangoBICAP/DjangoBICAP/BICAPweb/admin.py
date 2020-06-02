@@ -3,21 +3,26 @@ from .models import *
 from nested_admin import NestedModelAdmin, NestedStackedInline, NestedTabularInline, NestedInlineModelAdmin
 
 
-class InformazioneInline(NestedTabularInline):
-    model = Informazione
+class InformazioneQuestionarioInline(NestedTabularInline):
+    model = InformazioneQuestionario
+    extra = 0
+
+class InformazioneIndagineInline(NestedTabularInline):
+    model = InformazioneIndagine
     extra = 0
 
 class QuestionarioInline(NestedStackedInline):
     model = Questionario
     extra = 0
-    inlines = [InformazioneInline]
+    inlines = [InformazioneQuestionarioInline]
 
 class IndagineAdmin(NestedModelAdmin):
-    inlines = [QuestionarioInline]
+    inlines = [InformazioneIndagineInline, QuestionarioInline]
 
 
 admin.site.register(Utente)
 admin.site.register(Distribuzione)
 admin.site.register(Indagine, IndagineAdmin)
 admin.site.register(Questionario)
-admin.site.register(Informazione)
+admin.site.register(InformazioneIndagine)
+admin.site.register(InformazioneQuestionario)

@@ -49,19 +49,27 @@ class Questionario(models.Model):
         verbose_name = "Questionario"
         verbose_name_plural = "Questionari"
 
+
 class Informazione(models.Model):
     nomeFile = models.CharField(max_length=20)
     fileUrl = models.FileField()
     thumbnailUrl = models.FileField()
     tipoFile = models.CharField(max_length=20)
-    questionario = models.ForeignKey(Questionario, on_delete=models.CASCADE, related_name="informazioni")
+    #questionario = models.ForeignKey(Questionario, on_delete=models.CASCADE, related_name="informazioni")
 
     def __str__(self):
         return self.nomeFile
 
+class InformazioneQuestionario(Informazione):
+    questionario = models.ForeignKey(Questionario, on_delete=models.CASCADE, related_name="informazioni")
+
     class Meta:
-        verbose_name = "Informazione"
-        verbose_name_plural = "Informazioni"
+        verbose_name = "Informazione Questionario"
+        verbose_name_plural = "Informazioni Questionari"
 
+class InformazioneIndagine(Informazione):
+    questionario = models.ForeignKey(Indagine, on_delete=models.CASCADE, related_name="informazioni")
 
-
+    class Meta:
+        verbose_name = "Informazione Indagine"
+        verbose_name_plural = "Informazioni Indagini"
