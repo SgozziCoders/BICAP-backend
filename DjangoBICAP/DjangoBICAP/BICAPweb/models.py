@@ -24,8 +24,8 @@ class Indagine(models.Model):
         verbose_name_plural = "Indagini"
 
 class Distribuzione(models.Model):
-    utente = models.ForeignKey(Utente, on_delete=models.CASCADE, related_name="distribuzioni")
-    indagine = models.ForeignKey(Indagine, on_delete=models.CASCADE, related_name="distribuzioni")
+    utente = models.ForeignKey(Utente, on_delete=models.CASCADE, related_name="indagini")
+    indagine = models.ForeignKey(Indagine, on_delete=models.CASCADE, related_name="utenti")
     terminata = models.BooleanField()
 
     def __str__(self):
