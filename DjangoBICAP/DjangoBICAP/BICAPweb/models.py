@@ -1,7 +1,18 @@
 from django.db import models
 
+class Gruppo(models.Model):
+    nome = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.nome
+
+    class Meta:
+        verbose_name = "Gruppo"
+        verbose_name_plural = "Gruppi"
+
 class Utente(models.Model):
     email = models.EmailField()
+    gruppi = models.ManyToManyField(Gruppo, related_name='gruppi')
 
     def __str__(self):
         return self.email
@@ -15,6 +26,7 @@ class Indagine(models.Model):
     erogatore = models.CharField(max_length=20)
     imgUrl = models.FileField()
     tematica = models.TextField()
+    gruppi = models.ManyToManyField(Gruppo, related_name='gruppi_interessati')
 
     def __str__(self):
         return self.titoloIndagine
@@ -50,12 +62,13 @@ class Questionario(models.Model):
         verbose_name_plural = "Questionari"
 
 
+# Classe padre informazione, viene ereditata per distinguere le informazioni dei questionari da quelle
+# dell'indagine stessa
 class Informazione(models.Model):
     nomeFile = models.CharField(max_length=20)
     fileUrl = models.FileField()
     thumbnailUrl = models.FileField()
     tipoFile = models.CharField(max_length=20)
-    #questionario = models.ForeignKey(Questionario, on_delete=models.CASCADE, related_name="informazioni")
 
     def __str__(self):
         return self.nomeFile
