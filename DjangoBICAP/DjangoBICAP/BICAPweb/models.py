@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Gruppo(models.Model):
     nome = models.CharField(max_length=20)
@@ -24,6 +25,7 @@ class Utente(models.Model):
 class Indagine(models.Model):
     titoloIndagine = models.CharField(max_length=20)
     erogatore = models.CharField(max_length=20)
+    creato_da = models.ForeignKey(User, on_delete=models.CASCADE)
     imgUrl = models.FileField()
     tematica = models.TextField()
     gruppi = models.ManyToManyField(Gruppo, related_name='gruppi_interessati')

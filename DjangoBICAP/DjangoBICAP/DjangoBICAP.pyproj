@@ -3,7 +3,7 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <Name>DjangoBICAP</Name>
     <RootNamespace>DjangoBICAP</RootNamespace>
-    <InterpreterId>MSBuild|envBICAP|$(MSBuildProjectFullPath)</InterpreterId>
+    <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
     <WebBrowserPort>8000</WebBrowserPort>
   </PropertyGroup>
   <PropertyGroup>
@@ -32,6 +32,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="BICAPweb\admin.py" />
+    <Compile Include="BICAPweb\api\permissions.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="BICAPweb\api\serializers.py">
       <SubType>Code</SubType>
     </Compile>
@@ -42,8 +45,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BICAPweb\apps.py" />
-    <Compile Include="BICAPweb\migrations\0001_initial.py" />
-    <Compile Include="BICAPweb\migrations\__init__.py" />
     <Compile Include="BICAPweb\models.py" />
     <Compile Include="BICAPweb\tests.py" />
     <Compile Include="BICAPweb\urls.py">
@@ -66,7 +67,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="BICAPweb\" />
-    <Folder Include="BICAPweb\migrations\" />
     <Folder Include="BICAPweb\api\" />
     <Folder Include="BICAPweb\templates\" />
     <Folder Include="BICAPweb\templates\BICAPweb\" />
@@ -75,10 +75,10 @@
     <Folder Include="static\" />
   </ItemGroup>
   <ItemGroup>
-    <Interpreter Include="envBICAP\">
-      <Id>envBICAP</Id>
+    <Interpreter Include="env\">
+      <Id>env</Id>
       <Version>3.7</Version>
-      <Description>envBICAP (Python 3.7 (64-bit))</Description>
+      <Description>env (Python 3.7 (64-bit))</Description>
       <InterpreterPath>Scripts\python.exe</InterpreterPath>
       <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
       <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>

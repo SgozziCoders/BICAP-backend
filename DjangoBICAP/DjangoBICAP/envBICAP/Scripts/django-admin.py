@@ -1,4 +1,4 @@
-#!D:\SgozziCoders\repo\BICAP-backend\DjangoBICAP\DjangoBICAP\envBICAP\Scripts\python.exe
+#!C:\Users\Michele\Source\Repos\SgozziCoders\BICAP-backend\DjangoBICAP\DjangoBICAP\envBICAP\Scripts\python.exe
 from django.core import management
 
 if __name__ == "__main__":

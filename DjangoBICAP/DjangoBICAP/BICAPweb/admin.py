@@ -26,15 +26,27 @@ class QuestionarioInline(NestedStackedInline):
 
 class IndagineAdmin(NestedModelAdmin):
     inlines = [InformazioneIndagineInline, QuestionarioInline]
+    exclude = ('creato_da',)
 
     def save_model(self, request, obj, form, change):
+        obj.creato_da = request.user
         super(IndagineAdmin, self).save_model(request, obj, form, change)
+
+    def get_queryset(self, request):
+        qs = super(IndagineAdmin, self).get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(creato_da=request.user)
+
+class HideModelIndexAdmin(admin.ModelAdmin):
+    def has_module_permission(self, request):
+        return request.user.is_superuser
 
 
 admin.site.register(Gruppo, GruppoAdmin)
 admin.site.register(Utente)
 admin.site.register(Distribuzione)
 admin.site.register(Indagine, IndagineAdmin)
-admin.site.register(Questionario)
-admin.site.register(InformazioneIndagine)
-admin.site.register(InformazioneQuestionario)
+admin.site.register(Questionario, HideModelIndexAdmin)
+admin.site.register(InformazioneIndagine, HideModelIndexAdmin)
+admin.site.register(InformazioneQuestionario, HideModelIndexAdmin)

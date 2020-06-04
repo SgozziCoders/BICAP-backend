@@ -60,7 +60,7 @@ class IndagineBodySerializer(IndagineSerializer):
 
     class Meta:
         model = Indagine
-        exclude  = ('titoloIndagine','erogatore', 'imgUrl', 'tematica')
+        fields  = ('informazioni', 'questionari', 'tematica')
 
 
 class IndagineHeadSerializer(IndagineSerializer):
@@ -74,4 +74,3 @@ class DistribuzioneMinimalSerializer(DistribuzioneSerializer):
     class Meta:
         model = Distribuzione
         fields = ('terminata', )
-        #fields = "__all__"

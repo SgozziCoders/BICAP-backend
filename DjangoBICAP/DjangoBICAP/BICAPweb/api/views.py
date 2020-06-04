@@ -1,48 +1,48 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import generics
-from rest_framework import permissions
 
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from BICAPweb.models import *
 from .serializers import *
+from BICAPweb.api.permissions import IsMobileOrStaffUser, IsAuthenticated, IsStaffUser
 
-    ####################################################################
-    #######################      ADMIN ONLY      #######################
-    ####################################################################
+########################################################################
+#########################      ADMIN ONLY      #########################
+########################################################################
 class IndagineListCreateAPIView(generics.ListCreateAPIView):
     queryset = Indagine.objects.all().order_by("id")
     serializer_class = IndagineSerializer
-    permission_classes = [permissions.IsAdminUser]
-    #pagination_class = SmallSetPagination
+    permission_classes = [IsStaffUser]
 
 class DistribuzioneCreateAPIView(generics.ListCreateAPIView):
     queryset = Distribuzione.objects.all()
     serializer_class = DistribuzioneSerializer
-    permission_classes = [permissions.IsAdminUser]
-    #pagination_class = SmallSetPagination
+    permission_classes = [IsStaffUser]
 
 
-    ####################################################################
-    #######################        PUBLIC        #######################
-    ####################################################################
+########################################################################
+#########################        PUBLIC        #########################
+########################################################################
 
 class IndagineDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Indagine.objects.all()
     serializer_class = IndagineSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated]
 
 
-    ####################################################################
-    #######################      PUBLIC-APP      #######################
-    ####################################################################
+########################################################################
+#########################      PUBLIC-APP      #########################
+########################################################################
 class IndagineBodyAPIView(generics.RetrieveAPIView):
     queryset = Indagine.objects.all()
     serializer_class = IndagineBodySerializer
-
+    permission_classes = [IsMobileOrStaffUser]
 
 class IndagineHeadListAPIView(APIView):
+    permission_classes = [IsMobileOrStaffUser]
+
     """ 
     API che accetta come parametro la mail e restituisce una lista di indagineHead 
     """
@@ -69,6 +69,7 @@ class DistribuzioneMinimalDetailAPIView(APIView):
     """ 
     API che accetta come parametro la mail e id dell'indagine e restituisce una distribuzione 
     """
+    permission_classes = [IsMobileOrStaffUser]
 
     def get_object(self):
         email = self.request.query_params.get('email')   
