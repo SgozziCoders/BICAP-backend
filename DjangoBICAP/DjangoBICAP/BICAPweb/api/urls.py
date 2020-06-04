@@ -34,10 +34,12 @@ urlpatterns = [
          IndagineBodyAPIView.as_view(), 
          name="indagineBody-detail"),
 
+    #/api/indagineHeadList/?email=<email>
     path("indagineHeadList/", 
          IndagineHeadListAPIView.as_view(), 
          name="indagineHeadList-detail"),
 
+    #/api/distribuzione/?email=<email>&idIndagine=<idIndagine>
     path('distribuzione/', 
          DistribuzioneMinimalDetailAPIView.as_view(), 
          name="distribuzione-list"),
