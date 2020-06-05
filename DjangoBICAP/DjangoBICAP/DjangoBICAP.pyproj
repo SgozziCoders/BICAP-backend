@@ -46,6 +46,9 @@
     </Compile>
     <Compile Include="BICAPweb\apps.py" />
     <Compile Include="BICAPweb\models.py" />
+    <Compile Include="BICAPweb\signals.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="BICAPweb\tests.py" />
     <Compile Include="BICAPweb\urls.py">
       <SubType>Code</SubType>

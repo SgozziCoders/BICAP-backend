@@ -30,6 +30,13 @@ class InformazioneIndagineSerializer(serializers.ModelSerializer):
 class IndagineSerializer(serializers.ModelSerializer):
     informazioni  = InformazioneIndagineSerializer(many=True, read_only=True)
     questionari = QuestionarioSerializer(many=True, read_only=True)
+    creato_da = serializers.SlugRelatedField(
+        slug_field='username', 
+        read_only=True)
+    gruppi = serializers.SlugRelatedField(
+        many=True, 
+        read_only=True, 
+        slug_field='nome')
 
     class Meta:
         model = Indagine

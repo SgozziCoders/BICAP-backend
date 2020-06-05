@@ -37,6 +37,7 @@ class Indagine(models.Model):
         verbose_name = "Indagine"
         verbose_name_plural = "Indagini"
 
+
 class Distribuzione(models.Model):
     utente = models.ForeignKey(Utente, on_delete=models.CASCADE, related_name="indagini")
     indagine = models.ForeignKey(Indagine, on_delete=models.CASCADE, related_name="utenti")
