@@ -1,6 +1,7 @@
 from BICAPweb.models import *
 from django.db.models.signals import m2m_changed, post_save, post_delete
 from django.dispatch import receiver
+from django.conf import settings
 
 from preview_generator.manager import PreviewManager
 import os
@@ -36,8 +37,3 @@ def create_thumb(sender, instance, **kwargs):
         FullPathToimage = manager.get_jpeg_preview(filepath)
         instance.thumbnailUrl.name = '/thumb/' + os.path.basename(FullPathToimage)
         instance.save()
-
-
-#@receiver(post_delete, sender=InformazioneIndagine)
-#def delete_thumb(sender, instance, **kwargs):
-#    a = ""

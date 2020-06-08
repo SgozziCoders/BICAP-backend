@@ -56,13 +56,20 @@ class IndagineHeadListAPIView(APIView):
             indagineList.append(distribuzione.indagine)
         return indagineList
 
+    def SetFullUrl(self, request, response):
+        for indagine in response['indagine']:
+            indagine['imgUrl'] = ''.join([request.build_absolute_uri('/')[:-1].strip("/"), indagine['imgUrl']])
+        return response
+
     def get(self, request):
         email = self.request.query_params.get('email')   
         utente = get_object_or_404(Utente, email=email)
         distribuzioni = Distribuzione.objects.all().filter(utente=utente, terminata=False)
         serializer = IndagineHeadSerializer(self.getIndaginiFromDistribuzioni(distribuzioni), many=True)
-        response = { 'indagine' : serializer.data }
-        return Response(response)
+        response = { 'indagine' : serializer.data }     
+        return Response(self.SetFullUrl(request, response))
+
+    #full_url = ''.join(['http://', get_current_site(request).domain, obj.get_absolute_url()])
 
 
 class DistribuzioneMinimalDetailAPIView(APIView):

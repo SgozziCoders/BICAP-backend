@@ -26,7 +26,7 @@ class Indagine(models.Model):
     titoloIndagine = models.CharField(max_length=20)
     erogatore = models.CharField(max_length=20)
     creato_da = models.ForeignKey(User, on_delete=models.CASCADE)
-    imgUrl = models.FileField()
+    imgUrl = models.ImageField()
     tematica = models.TextField()
     gruppi = models.ManyToManyField(Gruppo, related_name='gruppi_interessati')
 

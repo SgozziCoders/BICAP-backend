@@ -76,6 +76,8 @@ class IndagineHeadSerializer(IndagineSerializer):
         model = Indagine
         fields  = ('id', 'titoloIndagine','erogatore', 'imgUrl', )
 
+
+
 class DistribuzioneMinimalSerializer(DistribuzioneSerializer):
 
     class Meta:
