@@ -16,12 +16,11 @@ class InformazioneQuestionarioInline(NestedTabularInline):
     extra = 0
     exclude = ('thumbnailUrl', 'tipoFile')
 
-
 class InformazioneIndagineInline(NestedTabularInline):
     model = InformazioneIndagine
     extra = 0
     exclude = ('thumbnailUrl', 'tipoFile')
-
+    
 
 class QuestionarioInline(NestedStackedInline):
     model = Questionario
