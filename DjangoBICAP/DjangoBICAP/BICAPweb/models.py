@@ -29,6 +29,7 @@ class Indagine(models.Model):
     imgUrl = models.ImageField()
     tematica = models.TextField()
     gruppi = models.ManyToManyField(Gruppo, related_name='gruppi_interessati')
+    ultimaModifica = models.TimeField(auto_now=True)
 
     def __str__(self):
         return self.titoloIndagine
@@ -72,6 +73,7 @@ class Informazione(models.Model):
     fileUrl = models.FileField()
     thumbnailUrl = models.FileField()
     tipoFile = models.CharField(max_length=20)
+    ultimaModifica = models.TimeField(auto_now=True)
 
     def __str__(self):
         return self.nomeFile

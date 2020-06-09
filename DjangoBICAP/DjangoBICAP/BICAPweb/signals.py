@@ -3,7 +3,7 @@ from django.db.models.signals import m2m_changed, post_save, post_delete
 from django.dispatch import receiver
 from django.conf import settings
 
-from preview_generator.manager import PreviewManager
+#from preview_generator.manager import PreviewManager
 import os
 
 
@@ -28,7 +28,7 @@ def CreateDistribuzione(sender, instance, action, reverse, model, pk_set, **kwar
             distribuzioni.delete()
 
 
-@receiver(post_save, sender=InformazioneIndagine)
+#@receiver(post_save, sender=InformazioneIndagine)
 def create_thumb(sender, instance, **kwargs):
     if(instance.thumbnailUrl.name == ''):
         filepath = instance.fileUrl.file.name

@@ -14,12 +14,12 @@ class GruppoAdmin(admin.ModelAdmin):
 class InformazioneQuestionarioInline(NestedTabularInline):
     model = InformazioneQuestionario
     extra = 0
-    exclude = ('thumbnailUrl', 'tipoFile')
+    exclude = ('thumbnailUrl', 'tipoFile', 'ultimaModifica')
 
 class InformazioneIndagineInline(NestedTabularInline):
     model = InformazioneIndagine
     extra = 0
-    exclude = ('thumbnailUrl', 'tipoFile')
+    exclude = ('thumbnailUrl', 'tipoFile', 'ultimaModifica')
     
 
 class QuestionarioInline(NestedStackedInline):
@@ -30,7 +30,7 @@ class QuestionarioInline(NestedStackedInline):
 
 class IndagineAdmin(NestedModelAdmin):
     inlines = [InformazioneIndagineInline, QuestionarioInline]
-    exclude = ('creato_da',)
+    exclude = ('creato_da', 'ultimaModifica')
 
     def save_model(self, request, obj, form, change):
         obj.creato_da = request.user
