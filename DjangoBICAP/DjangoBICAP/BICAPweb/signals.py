@@ -51,7 +51,7 @@ def post_save_InformazioneIndagine(sender, instance, **kwargs):
         instance.save()
 
 #@receiver(post_save, sender=InformazioneQuestionario)
-def post_save_InformazioneIndagine(sender, instance, **kwargs):
+def post_save_InformazioneQuestionario(sender, instance, **kwargs):
     if instance.thumbnailUrl.name == '' or instance.tipoFile == '':
         if instance.tipoFile == '':
             set_tipoFile(sender, instance)
