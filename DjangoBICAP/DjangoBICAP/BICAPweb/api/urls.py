@@ -1,6 +1,6 @@
 from django.urls import path, include
 from BICAPweb.api.views import (IndagineListCreateAPIView, 
-                                DistribuzioneCreateAPIView, 
+                                DistribuzioneListCreateAPIView, 
                                 IndagineDetailAPIView, 
                                 IndagineBodyAPIView, 
                                 IndagineHeadListAPIView,
@@ -15,7 +15,7 @@ urlpatterns = [
          name="indagini-list"),
 
     path('distribuzioni/', 
-         DistribuzioneCreateAPIView.as_view(), 
+         DistribuzioneListCreateAPIView.as_view(), 
          name="distribuzione-list"),
 
 

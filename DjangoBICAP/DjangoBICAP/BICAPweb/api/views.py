@@ -16,7 +16,7 @@ class IndagineListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = IndagineSerializer
     permission_classes = [IsStaffUser]
 
-class DistribuzioneCreateAPIView(generics.ListCreateAPIView):
+class DistribuzioneListCreateAPIView(generics.ListCreateAPIView):
     queryset = Distribuzione.objects.all()
     serializer_class = DistribuzioneSerializer
     permission_classes = [IsStaffUser]
