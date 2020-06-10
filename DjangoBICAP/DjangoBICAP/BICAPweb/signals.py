@@ -1,12 +1,10 @@
 from BICAPweb.models import *
-from django.db.models.signals import m2m_changed, post_save, post_delete
+from django.db.models.signals import m2m_changed, post_save, post_delete, pre_save
 from django.dispatch import receiver
 from django.conf import settings
-import mimetypes
-
-#from preview_generator.manager import PreviewManager
+from preview_generator.manager import PreviewManager
 import os
-
+import mimetypes
 
 @receiver(m2m_changed, sender=Indagine.gruppi.through)
 def CreateDistribuzione(sender, instance, action, reverse, model, pk_set, **kwargs):
@@ -58,3 +56,19 @@ def post_save_InformazioneQuestionario(sender, instance, **kwargs):
         if instance.thumbnailUrl.name == '':
             create_thumb(sender, instance)      
         instance.save()
+
+def reset_tipofile_and_thumbnail(sender, instance):
+    if instance.thumbnailUrl.name != '' or instance.tipoFile != '':
+        old_Informazione = sender.objects.get(pk=instance.pk)
+        if not old_Informazione.fileUrl == instance.fileUrl:
+            instance.tipoFile = ''
+            instance.thumbnailUrl.name = ''
+            instance.save()
+
+@receiver(pre_save, sender=InformazioneQuestionario)
+def pre_save_InformazioneQuestionario(sender, instance, **kwargs):
+    reset_tipofile_and_thumbnail(sender, instance)
+
+@receiver(pre_save, sender=InformazioneIndagine)
+def pre_save_InformazioneIndagine(sender, instance, **kwargs):
+    reset_tipofile_and_thumbnail(sender, instance)
