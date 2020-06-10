@@ -39,7 +39,7 @@ def create_thumb(sender, instance):
 def set_tipoFile(sender, instance):
     instance.tipoFile = mimetypes.guess_type(instance.fileUrl.name)[0]
 
-#@receiver(post_save, sender=InformazioneIndagine)
+@receiver(post_save, sender=InformazioneIndagine)
 def post_save_InformazioneIndagine(sender, instance, **kwargs):
     if instance.thumbnailUrl.name == '' or instance.tipoFile == '':
         if instance.tipoFile == '':
@@ -48,19 +48,19 @@ def post_save_InformazioneIndagine(sender, instance, **kwargs):
             create_thumb(sender, instance)      
         instance.save()
 
-#@receiver(post_save, sender=InformazioneQuestionario)
+@receiver(post_save, sender=InformazioneQuestionario)
 def post_save_InformazioneQuestionario(sender, instance, **kwargs):
     if instance.thumbnailUrl.name == '' or instance.tipoFile == '':
         if instance.tipoFile == '':
             set_tipoFile(sender, instance)
         if instance.thumbnailUrl.name == '':
-            create_thumb(sender, instance)      
+            create_thumb(sender, instance)        
         instance.save()
 
 def reset_tipofile_and_thumbnail(sender, instance):
-    if instance.thumbnailUrl.name != '' or instance.tipoFile != '':
-        old_Informazione = sender.objects.get(pk=instance.pk)
-        if not old_Informazione.fileUrl == instance.fileUrl:
+    old_Informazione = 	sender.objects.filter(pk=instance.pk).first()
+    if old_Informazione != None and old_Informazione.fileUrl != instance.fileUrl:
+        if instance.thumbnailUrl.name != '' or instance.tipoFile != '':          
             instance.tipoFile = ''
             instance.thumbnailUrl.name = ''
             instance.save()
