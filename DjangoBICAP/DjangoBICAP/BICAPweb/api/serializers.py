@@ -1,11 +1,9 @@
 from rest_framework import serializers
 from BICAPweb.models import *
 
-    ####################################################################
-    #######################        GENERIC       #######################
-    ####################################################################
-
-
+########################################################################
+#########################       GENERIC        #########################
+########################################################################
 class InformazioneQuestionarioSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -30,9 +28,11 @@ class InformazioneIndagineSerializer(serializers.ModelSerializer):
 class IndagineSerializer(serializers.ModelSerializer):
     informazioni  = InformazioneIndagineSerializer(many=True, read_only=True)
     questionari = QuestionarioSerializer(many=True, read_only=True)
+    #SlugRelatedField serve per ottenere il nome dell'utente invece del suo id
     creato_da = serializers.SlugRelatedField(
         slug_field='username', 
         read_only=True)
+    #SlugRelatedField serve per ottenere il nome dell'gruppo invece del suo id
     gruppi = serializers.SlugRelatedField(
         many=True, 
         read_only=True, 
@@ -59,9 +59,9 @@ class DistribuzioneSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-    ####################################################################
-    #######################      PUBLIC-APP      #######################
-    ####################################################################
+########################################################################
+#########################       APP-USER       #########################
+########################################################################
 
 class IndagineBodySerializer(IndagineSerializer):
 

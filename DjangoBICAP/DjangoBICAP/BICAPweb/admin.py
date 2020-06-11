@@ -16,6 +16,7 @@ class InformazioneQuestionarioInline(NestedTabularInline):
     extra = 0
     exclude = ('thumbnailUrl', 'tipoFile', 'ultimaModifica')
 
+
 class InformazioneIndagineInline(NestedTabularInline):
     model = InformazioneIndagine
     extra = 0
@@ -28,6 +29,10 @@ class QuestionarioInline(NestedStackedInline):
     inlines = [InformazioneQuestionarioInline]
 
 
+"""
+Classe che ci permette di nascondere i campi creato_da e ultimaModifica e anche
+di visualizzare solo le proprie indagini se l'utente non è admin
+"""
 class IndagineAdmin(NestedModelAdmin):
     inlines = [InformazioneIndagineInline, QuestionarioInline]
     exclude = ('creato_da', 'ultimaModifica')
@@ -43,17 +48,30 @@ class IndagineAdmin(NestedModelAdmin):
         return qs.filter(creato_da=request.user)
 
 
+"""
+Classe che ci permette di nascondere il campo gruppi riferito alla modello 
+utenti
+"""
 class UtenteAdmin(admin.ModelAdmin):
     def has_module_permission(self, request):
         return False
     exclude = ('gruppi',)
 
 
+"""
+Classe che ci permette di nascondere i modelli nella homepage admin se non si è
+un membro dello staff usata con Questionario, InformazioneIndagine e 
+InformazioneQuestionario.
+"""
 class HideModelIndexAdmin(admin.ModelAdmin):
     def has_module_permission(self, request):
         return request.user.is_superuser
 
 
+"""
+Classe che ci permette la crezione/modifica di un utente con la possibilità di 
+assegnargli un gruppo
+"""
 class UtenteConGruppo(Utente):
     class Meta:
         verbose_name = "Utente"

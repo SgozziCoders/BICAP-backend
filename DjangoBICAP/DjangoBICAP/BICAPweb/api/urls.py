@@ -1,7 +1,6 @@
 from django.urls import path, include
 from BICAPweb.api.views import (IndagineListCreateAPIView, 
-                                DistribuzioneListCreateAPIView, 
-                                IndagineDetailAPIView, 
+                                DistribuzioneListCreateAPIView,
                                 IndagineBodyAPIView, 
                                 IndagineHeadListAPIView,
                                 DistribuzioneMinimalDetailAPIView)
@@ -18,17 +17,9 @@ urlpatterns = [
          DistribuzioneListCreateAPIView.as_view(), 
          name="distribuzione-list"),
 
-
-########################################################################
-#########################        PUBLIC        #########################
-########################################################################
-    path("indagine/by-id/<int:pk>", 
-         IndagineDetailAPIView.as_view(), 
-         name="indagine-detail"),
-
     
 ########################################################################
-#########################      PUBLIC-APP      #########################
+#########################       APP-USER       #########################
 ########################################################################
     path("indaginebody/by-id/<int:pk>", 
          IndagineBodyAPIView.as_view(), 
@@ -43,7 +34,4 @@ urlpatterns = [
     path('distribuzione/', 
          DistribuzioneMinimalDetailAPIView.as_view(), 
          name="distribuzione-list"),
-    
-    #Distribuzione put par1: id-utente  par2: idIndagine
-    #path('distribuzione/.... DistribuzioneCreateAPIView.as_view(), name="distribuzione-list")
 ]

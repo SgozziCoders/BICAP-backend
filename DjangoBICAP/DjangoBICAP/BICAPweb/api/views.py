@@ -6,34 +6,31 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from BICAPweb.models import *
 from .serializers import *
-from BICAPweb.api.permissions import IsMobileOrStaffUser, IsAuthenticated, IsStaffUser
+from BICAPweb.api.permissions import IsMobileOrStaffUser, IsStaffUser
 
 ########################################################################
 #########################      ADMIN ONLY      #########################
 ########################################################################
 class IndagineListCreateAPIView(generics.ListCreateAPIView):
+    """
+    API che restituisce tutte le indagini che sono state create
+    """
     queryset = Indagine.objects.all().order_by("id")
     serializer_class = IndagineSerializer
     permission_classes = [IsStaffUser]
 
+
 class DistribuzioneListCreateAPIView(generics.ListCreateAPIView):
-    queryset = Distribuzione.objects.all()
+    """
+    API che restituisce tutte le distribuzioni che sono state create
+    """
+    queryset = Distribuzione.objects.all().order_by("id")
     serializer_class = DistribuzioneSerializer
     permission_classes = [IsStaffUser]
 
 
 ########################################################################
-#########################        PUBLIC        #########################
-########################################################################
-
-class IndagineDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Indagine.objects.all()
-    serializer_class = IndagineSerializer
-    permission_classes = [IsAuthenticated]
-
-
-########################################################################
-#########################      PUBLIC-APP      #########################
+#########################       APP-USER       #########################
 ########################################################################
 class IndagineBodyAPIView(generics.RetrieveAPIView):
     queryset = Indagine.objects.all()
@@ -41,11 +38,10 @@ class IndagineBodyAPIView(generics.RetrieveAPIView):
     permission_classes = [IsMobileOrStaffUser]
 
 class IndagineHeadListAPIView(APIView):
-    permission_classes = [IsMobileOrStaffUser]
-
     """ 
     API che accetta come parametro la mail e restituisce una lista di indagineHead 
     """
+    permission_classes = [IsMobileOrStaffUser]
 
     def getIndaginiFromDistribuzioni(self, distribuzioni):
         """ 
@@ -68,8 +64,6 @@ class IndagineHeadListAPIView(APIView):
         serializer = IndagineHeadSerializer(self.getIndaginiFromDistribuzioni(distribuzioni), many=True)
         response = { 'indagine' : serializer.data }     
         return Response(self.SetFullUrl(request, response))
-
-    #full_url = ''.join(['http://', get_current_site(request).domain, obj.get_absolute_url()])
 
 
 class DistribuzioneMinimalDetailAPIView(APIView):
