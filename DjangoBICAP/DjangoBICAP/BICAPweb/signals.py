@@ -4,7 +4,7 @@ import mimetypes
 from django.db.models.signals import m2m_changed, post_save, post_delete, pre_save
 from django.dispatch import receiver
 from django.conf import settings
-from preview_generator.manager import PreviewManager
+#from preview_generator.manager import PreviewManager
 from BICAPweb.models import *
 
 
@@ -27,7 +27,7 @@ def CreateDistribuzione(sender, instance, action, reverse, model, pk_set, **kwar
                 if len(Distribuzione.objects.filter(utente=utente, indagine=indagine)) == 0:
                     Distribuzione.objects.get_or_create(utente=utente, indagine=indagine, terminata=False)
         if action == 'post_remove':
-            distribuzioni = Distribuzione.objects.all()
+            distribuzioni = Distribuzione.objects.filter(indagine=instance)
             for utente in utenti:
                 distribuzioni = distribuzioni.exclude(utente=utente)
             distribuzioni.delete()
