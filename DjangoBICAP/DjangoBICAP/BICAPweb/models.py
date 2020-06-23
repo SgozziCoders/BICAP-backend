@@ -82,14 +82,18 @@ class Informazione(models.Model):
         super(Informazione, self).__init__(*args, **kwargs)
         self.__original_fileUrl = self.fileUrl
 
+    """
+    Overraide del metodo save, che permette di controllare se l'informazione
+    è stata aggiornata con un nuovo file e in quel caso il tipoFile e la 
+    thumbnailUrl verranno settati a null per essere poi generati.
+    Questa operazione di generazione avverrà grazie al signal post_save.
+    """
     def save(self, force_insert=False, force_update=False, *args, **kwargs):
         if self.fileUrl != self.__original_fileUrl:
             self.tipoFile = ''
             self.thumbnailUrl = ''
             self.__original_fileUrl = self.fileUrl
         super(Informazione, self).save(force_insert, force_update, *args, **kwargs)
-
-
 
 
 class InformazioneQuestionario(Informazione):

@@ -61,11 +61,10 @@ post_save_InformazioneIndagine che si occupa di ottenere e salvare il mime type
 e di creare una thumbnail se necessario.
 """
 def post_save_informazione_helper(sender, instance): 
-    old_Informazione = 	sender.objects.filter(pk=instance.pk).first()
-    if old_Informazione.thumbnailUrl.name == '' or old_Informazione.tipoFile == '':
-        if old_Informazione.tipoFile == '':
+    if instance.thumbnailUrl.name == '' or instance.tipoFile == '':
+        if instance.tipoFile == '':
             tipoFile = get_tipoFile(sender, instance)
-        if old_Informazione.thumbnailUrl.name == '':
+        if instance.thumbnailUrl.name == '':
             thumbnailUrl = create_thumb(sender, instance)      
         sender.objects.filter(pk=instance.pk).update(tipoFile=tipoFile, thumbnailUrl=thumbnailUrl)
 
@@ -83,11 +82,10 @@ Metodo che crea una thumbnail a partire da un file
 def create_thumb(sender, instance):
     #Se il file è un audio gli assegno una thumbnail prefatta
     if 'audio' in instance.tipoFile:
-        instance.thumbnailUrl.name = '/thumb/audio.png'
+        return '/thumb/audio.png'
     else:
         filepath = instance.fileUrl.file.name
         cache_path = settings.MEDIA_ROOT + '/thumb'
         manager = PreviewManager(cache_path, create_folder=True)
         FullPathToimage = manager.get_jpeg_preview(filepath)
-        instance.thumbnailUrl.name = '/thumb/' + os.path.basename(FullPathToimage)
-    return instance.thumbnailUrl
+        return '/thumb/' + os.path.basename(FullPathToimage)
