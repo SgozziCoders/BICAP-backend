@@ -4,7 +4,7 @@ import mimetypes
 from django.db.models.signals import m2m_changed, post_save, post_delete, pre_save
 from django.dispatch import receiver
 from django.conf import settings
-#from preview_generator.manager import PreviewManager
+from preview_generator.manager import PreviewManager
 from BICAPweb.models import *
 
 
@@ -61,12 +61,15 @@ post_save_InformazioneIndagine che si occupa di ottenere e salvare il mime type
 e di creare una thumbnail se necessario.
 """
 def post_save_informazione_helper(sender, instance): 
-    if instance.thumbnailUrl.name == '' or instance.tipoFile == '':
-        if instance.tipoFile == '':
-            set_tipoFile(sender, instance)
+    # controllo che _disable_signals sia settato a True, _disable_signals mi 
+    # permette di evitare il verificarsi di loop signals quando salvo l'istanza
+    if not getattr(instance, '_disable_signals', False):
+        if instance.thumbnailUrl.name == '' or instance.tipoFile == '':
+            if instance.tipoFile == '':
+                set_tipoFile(sender, instance)
         if instance.thumbnailUrl.name == '':
             create_thumb(sender, instance)      
-        instance.save()
+            instance.save_without_signals()
 
 
 """
@@ -118,9 +121,12 @@ def pre_save_InformazioneIndagine(sender, instance, **kwargs):
 Metodo per resettare il campo thumbnail e tipofile se necessario
 """
 def reset_tipofile_and_thumbnail(sender, instance):
-    old_Informazione = 	sender.objects.filter(pk=instance.pk).first()
-    if old_Informazione != None and old_Informazione.fileUrl != instance.fileUrl:
-        if instance.thumbnailUrl.name != '' or instance.tipoFile != '':          
-            instance.tipoFile = ''
-            instance.thumbnailUrl.name = ''
-            instance.save()
+    # controllo che _disable_signals sia settato a True, _disable_signals mi 
+    # permette di evitare il verificarsi di loop signals quando salvo l'istanza
+    if not getattr(instance, '_disable_signals', False):
+        old_Informazione = 	sender.objects.filter(pk=instance.pk).first()
+        if old_Informazione != None and old_Informazione.fileUrl != instance.fileUrl:
+            if instance.thumbnailUrl.name != '' or instance.tipoFile != '':          
+                instance.tipoFile = ''
+                instance.thumbnailUrl.name = ''
+                instance.save_without_signals()

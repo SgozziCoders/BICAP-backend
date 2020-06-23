@@ -55,7 +55,6 @@ class Distribuzione(models.Model):
 class Questionario(models.Model):
     titolo = models.CharField(max_length=20)
     qualtricsUrl = models.CharField(max_length=250)
-    compilato = models.BooleanField()
     indagine = models.ForeignKey(Indagine, on_delete=models.CASCADE, related_name="questionari")
 
     def __str__(self):
@@ -74,6 +73,15 @@ class Informazione(models.Model):
     thumbnailUrl = models.FileField()
     tipoFile = models.CharField(max_length=20)
     ultimaModifica = models.TimeField(auto_now=True)
+
+    def save_without_signals(self):
+        """
+        Questo mi permette di aggiornare il modello via codice dentero un 
+        signal post_save() evitando di entrare in un loop infinito
+        """
+        self._disable_signals = True
+        self.save()
+        self._disable_signals = False
 
     def __str__(self):
         return self.nomeFile
