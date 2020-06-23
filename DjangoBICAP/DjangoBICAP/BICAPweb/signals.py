@@ -61,22 +61,20 @@ post_save_InformazioneIndagine che si occupa di ottenere e salvare il mime type
 e di creare una thumbnail se necessario.
 """
 def post_save_informazione_helper(sender, instance): 
-    # controllo che _disable_signals sia settato a True, _disable_signals mi 
-    # permette di evitare il verificarsi di loop signals quando salvo l'istanza
-    if not getattr(instance, '_disable_signals', False):
-        if instance.thumbnailUrl.name == '' or instance.tipoFile == '':
-            if instance.tipoFile == '':
-                set_tipoFile(sender, instance)
-        if instance.thumbnailUrl.name == '':
-            create_thumb(sender, instance)      
-            instance.save_without_signals()
+    old_Informazione = 	sender.objects.filter(pk=instance.pk).first()
+    if old_Informazione.thumbnailUrl.name == '' or old_Informazione.tipoFile == '':
+        if old_Informazione.tipoFile == '':
+            tipoFile = get_tipoFile(sender, instance)
+        if old_Informazione.thumbnailUrl.name == '':
+            thumbnailUrl = create_thumb(sender, instance)      
+        sender.objects.filter(pk=instance.pk).update(tipoFile=tipoFile, thumbnailUrl=thumbnailUrl)
 
 
 """
 Metodo che ricava il tipo di mime dal nome del file caricato
 """
-def set_tipoFile(sender, instance):
-    instance.tipoFile = mimetypes.guess_type(instance.fileUrl.name)[0]
+def get_tipoFile(sender, instance):
+    return mimetypes.guess_type(instance.fileUrl.name)[0]
 
 
 """
@@ -92,41 +90,4 @@ def create_thumb(sender, instance):
         manager = PreviewManager(cache_path, create_folder=True)
         FullPathToimage = manager.get_jpeg_preview(filepath)
         instance.thumbnailUrl.name = '/thumb/' + os.path.basename(FullPathToimage)
-
-
-""" 
-Metodo richiamato prima del salvataggio di una modifica ma anche prima della 
-creazione di un InformazioneQuestionario.
-Questo metodo si occupa di resettare il campo thumbnail e tipofile se è stato
-caricato un file diverso da quello già presente nell'InformazioneQuestionario
-presa in considerazione
-""" 
-@receiver(pre_save, sender=InformazioneQuestionario)
-def pre_save_InformazioneQuestionario(sender, instance, **kwargs):
-    reset_tipofile_and_thumbnail(sender, instance)
-
-""" 
-Metodo richiamato prima del salvataggio di una modifica ma anche prima della 
-creazione di un InformazioneIndagine.
-Questo metodo si occupa di resettare il campo thumbnail e tipofile se è stato
-caricato un file diverso da quello già presente nell'InformazioneIndagine
-presa in considerazione
-""" 
-@receiver(pre_save, sender=InformazioneIndagine)
-def pre_save_InformazioneIndagine(sender, instance, **kwargs):
-    reset_tipofile_and_thumbnail(sender, instance)
-
-
-"""
-Metodo per resettare il campo thumbnail e tipofile se necessario
-"""
-def reset_tipofile_and_thumbnail(sender, instance):
-    # controllo che _disable_signals sia settato a True, _disable_signals mi 
-    # permette di evitare il verificarsi di loop signals quando salvo l'istanza
-    if not getattr(instance, '_disable_signals', False):
-        old_Informazione = 	sender.objects.filter(pk=instance.pk).first()
-        if old_Informazione != None and old_Informazione.fileUrl != instance.fileUrl:
-            if instance.thumbnailUrl.name != '' or instance.tipoFile != '':          
-                instance.tipoFile = ''
-                instance.thumbnailUrl.name = ''
-                instance.save_without_signals()
+    return instance.thumbnailUrl

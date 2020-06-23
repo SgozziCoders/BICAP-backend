@@ -73,18 +73,24 @@ class Informazione(models.Model):
     thumbnailUrl = models.FileField()
     tipoFile = models.CharField(max_length=20)
     ultimaModifica = models.TimeField(auto_now=True)
-
-    def save_without_signals(self):
-        """
-        Questo mi permette di aggiornare il modello via codice dentero un 
-        signal post_save() evitando di entrare in un loop infinito
-        """
-        self._disable_signals = True
-        self.save()
-        self._disable_signals = False
+    __original_fileUrl = None
 
     def __str__(self):
         return self.nomeFile
+
+    def __init__(self, *args, **kwargs):
+        super(Informazione, self).__init__(*args, **kwargs)
+        self.__original_fileUrl = self.fileUrl
+
+    def save(self, force_insert=False, force_update=False, *args, **kwargs):
+        if self.fileUrl != self.__original_fileUrl:
+            self.tipoFile = ''
+            self.thumbnailUrl = ''
+            self.__original_fileUrl = self.fileUrl
+        super(Informazione, self).save(force_insert, force_update, *args, **kwargs)
+
+
+
 
 class InformazioneQuestionario(Informazione):
     questionario = models.ForeignKey(Questionario, on_delete=models.CASCADE, related_name="informazioni")
