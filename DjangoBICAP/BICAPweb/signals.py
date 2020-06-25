@@ -73,7 +73,8 @@ def post_save_informazione_helper(sender, instance):
 Metodo che ricava il tipo di mime dal nome del file caricato
 """
 def get_tipoFile(sender, instance):
-    return mimetypes.guess_type(instance.fileUrl.name)[0]
+    instance.tipoFile = mimetypes.guess_type(instance.fileUrl.name)[0]
+    return instance.tipoFile
 
 
 """
