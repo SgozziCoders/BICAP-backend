@@ -71,7 +71,7 @@ class Informazione(models.Model):
     nomeFile = models.CharField(max_length=20)
     fileUrl = models.FileField()
     thumbnailUrl = models.FileField()
-    tipoFile = models.CharField(max_length=20)
+    tipoFile = models.CharField(max_length=200)
     ultimaModifica = models.TimeField(auto_now=True)
     __original_fileUrl = None
 

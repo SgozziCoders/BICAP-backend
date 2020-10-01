@@ -16,6 +16,10 @@ sudo -u postgres createuser django
 sudo -u postgres createdb BICAPwebDB
 sudo -u postgres psql
 ALTER USER django WITH PASSWORD 'LaPasswordCheVoleteDare';
+```
+Modificate **LaPasswordCheVoleteDare** con una password sicura
+
+```console
 exit
 sudo su django
 git clone https://github.com/SgozziCoders/BICAP-backend
@@ -25,7 +29,14 @@ python3 -m venv django_env
 pip install -r /home/django/DjangoBICAP/requirements.txt
 mv DjangoBICAP/media/ /home/django/media-serve/
 mkdir /home/django/static-serve/
+```
+
+Ora apriamo il file settings.py e modifichiamo la riga 91 inserendo la password del database
+```console
 nano DjangoBICAP/DjangoBICAP/settings.py
+```
+
+```console
 python  manage.py collectstatic
 python manage.py makemigrations BICAPweb
 python manage.py migrate
