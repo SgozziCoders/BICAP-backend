@@ -61,6 +61,7 @@ class Questionario(models.Model):
         return self.titolo
 
     class Meta:
+        ordering = ['pk']
         verbose_name = "Questionario"
         verbose_name_plural = "Questionari"
 
@@ -95,6 +96,8 @@ class Informazione(models.Model):
             self.__original_fileUrl = self.fileUrl
         super(Informazione, self).save(force_insert, force_update, *args, **kwargs)
 
+    class Meta:
+        ordering = ['pk']
 
 class InformazioneQuestionario(Informazione):
     questionario = models.ForeignKey(Questionario, on_delete=models.CASCADE, related_name="informazioni")
